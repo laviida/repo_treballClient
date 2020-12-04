@@ -778,6 +778,13 @@ export function pageRegister() {
 }
 
 
+import {
+  Pair
+} from "../model/pair.js";
+import {
+  Team
+} from "../model/team.js";
+
 export async function pageBets() {
   Utils.clear();
   Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
@@ -786,27 +793,38 @@ export async function pageBets() {
   document.getElementById('content').classList.add("wh100");
   document.getElementById('page').classList.add("wh100");
   document.getElementById('page').innerHTML = tournament();;
-  //var teams = [];
-  //await Utils.loadJSON("../json/teams_players.json").then((response) => (teams = JSON.parse(response)));
-  Number.prototype.random = () => ~~(Math.random() * 5);
-  var htmlTeams = Array.from(document.getElementsByClassName("tournament-bracket__number"));
+  var teams = [];
+  await Utils.loadJSON("../json/teams_players.json").then((response) => (teams = JSON.parse(response)));
+  var htmlTeams = Array.from(document.getElementsByClassName("tournament-bracket__team"));
+
+  var pairs = [];
+  htmlTeams.forEach((x, idx) => {
+    if (idx % 2 == 0) {
+      let pair = new Pair(new Team({}, x), new Team({}, htmlTeams[idx + 1]));
+      pairs.push(pair);
+    }
+  });
+  pairs.forEach((p, idx) => {
+
+    p.home.setCode(teams[~~(Math.random() * teams.length)].Key);
+    p.away.setCode(teams[~~(Math.random() * teams.length)].Key);
+    p.play();
+
+  });
 
 
-
-
-  console.log(pairs);
   //fer en clases
   /* htmlTeams.forEach((team, idx) => {
- 
-     if (idx % 2 == 0) {
-       let index1 = idx == 0 ? 0 : (idx / 2) - 1;
- 
-       team.innerHTML = pairs[index1][0];
-       htmlTeams[idx + 1].innerHTML = pairs[(idx / 2) - 1][1];
-       if (Math.max(pairs[(idx / 2) - 1][0], pairs[(idx / 2) - 1][1]) == pairs[(idx / 2) - 1][0]) team.parentElement.parentElement.classList.add("tournament-bracket__team--winner")
-       else htmlTeams[idx + 1].parentElement.parentElement.classList.add("tournament-bracket__team--winner");
-     }
-});*/
+   
+       if (idx % 2 == 0) {
+         let index1 = idx == 0 ? 0 : (idx / 2) - 1;
+   
+         team.innerHTML = pairs[index1][0];
+         htmlTeams[idx + 1].innerHTML = pairs[(idx / 2) - 1][1];
+         if (Math.max(pairs[(idx / 2) - 1][0], pairs[(idx / 2) - 1][1]) == pairs[(idx / 2) - 1][0]) team.parentElement.parentElement.classList.add("tournament-bracket__team--winner")
+         else htmlTeams[idx + 1].parentElement.parentElement.classList.add("tournament-bracket__team--winner");
+       }
+  });*/
 
 
 

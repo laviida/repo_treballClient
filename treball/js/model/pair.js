@@ -1,8 +1,12 @@
-import {} from "module";
+import {
+    Match
+} from "./match.js";
+export {
+    Pair
+};
 class Pair extends Match {
-    constructor() {
-        super();
-
+    constructor(home, away) {
+        super(home, away);
     }
 
 
