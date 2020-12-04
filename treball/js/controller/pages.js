@@ -256,77 +256,77 @@ export async function pageLive() {
             name: "MLB",
             provider_value: "sr:tournament:109",
             matches: [{
-              id: 20599,
-              name: "Pittsburgh Pirates VS Philadelphia Phillies",
-              schedule: "2019-08-27T23:05:00+00:00",
-              home_abbreviation: "PHI",
-              away_abbreviation: "PIT",
-              odds: {
-                home_ml: -147,
-                favourite_team: "PHI",
-                spread: "1.5",
-                total: "10",
-                away_ml: "+125",
+                id: 20599,
+                name: "Pittsburgh Pirates VS Philadelphia Phillies",
+                schedule: "2019-08-27T23:05:00+00:00",
+                home_abbreviation: "PHI",
+                away_abbreviation: "PIT",
+                odds: {
+                  home_ml: -147,
+                  favourite_team: "PHI",
+                  spread: "1.5",
+                  total: "10",
+                  away_ml: "+125",
+                },
               },
-            },
-            {
-              id: 20610,
-              name: "Baltimore Orioles VS Washington Nationals",
-              schedule: "2019-08-27T23:05:00+00:00",
-              home_abbreviation: "WSH",
-              away_abbreviation: "BAL",
-              odds: {
-                total: "9.5",
-                home_ml: -333,
-                favourite_team: "WSH",
-                spread: "1.5",
-                away_ml: "+265",
+              {
+                id: 20610,
+                name: "Baltimore Orioles VS Washington Nationals",
+                schedule: "2019-08-27T23:05:00+00:00",
+                home_abbreviation: "WSH",
+                away_abbreviation: "BAL",
+                odds: {
+                  total: "9.5",
+                  home_ml: -333,
+                  favourite_team: "WSH",
+                  spread: "1.5",
+                  away_ml: "+265",
+                },
               },
-            },
-            {
-              id: 20601,
-              name: "Chicago Cubs VS New York Mets",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "NYM",
-              away_abbreviation: "CHC",
-              odds: {
-                total: "8",
-                away_ml: -116,
-                favourite_team: "CHC",
-                spread: "1.5",
-                home_ml: -105,
+              {
+                id: 20601,
+                name: "Chicago Cubs VS New York Mets",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "NYM",
+                away_abbreviation: "CHC",
+                odds: {
+                  total: "8",
+                  away_ml: -116,
+                  favourite_team: "CHC",
+                  spread: "1.5",
+                  home_ml: -105,
+                },
               },
-            },
-            {
-              id: 20604,
-              name: "Cleveland Indians VS Detroit Tigers",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "DET",
-              away_abbreviation: "CLE",
-              odds: {
-                favourite_team: "CLE",
-                spread: "1.5",
-                total: "9.5",
-                home_ml: "+145",
-                away_ml: -167,
+              {
+                id: 20604,
+                name: "Cleveland Indians VS Detroit Tigers",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "DET",
+                away_abbreviation: "CLE",
+                odds: {
+                  favourite_team: "CLE",
+                  spread: "1.5",
+                  total: "9.5",
+                  home_ml: "+145",
+                  away_ml: -167,
+                },
               },
-            },
-            {
-              id: 20600,
-              name: "Cincinnati Reds VS Miami Marlins",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "MIA",
-              away_abbreviation: "CIN",
-              odds: {
-                total: "7",
-                away_ml: -161,
-                favourite_team: "CIN",
-                spread: "1.5",
-                home_ml: "+140",
+              {
+                id: 20600,
+                name: "Cincinnati Reds VS Miami Marlins",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "MIA",
+                away_abbreviation: "CIN",
+                odds: {
+                  total: "7",
+                  away_ml: -161,
+                  favourite_team: "CIN",
+                  spread: "1.5",
+                  home_ml: "+140",
+                },
               },
-            },
             ],
-          },];
+          }, ];
           if (!app.data.length && !app.newData.length) {
             app.leagueTunnel.classList.add("empty");
           } else if (!app.data.length) {
@@ -646,49 +646,49 @@ export function pageAdmin() { //llevar javascript que no val
       data: {
         labels: ["One", "Two", "Three", "Four", "Five", 'Six', "Seven", "Eight"],
         datasets: [{
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointBorderColor: "transparent",
-          pointColor: "white",
-          borderColor: '#d9534f',
-          borderWidth: 0,
-          showLine: true,
-          data: [0, 40, 10, 30, 10, 20, 15, 20],
-          pointBackgroundColor: 'transparent',
-        }, {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#5cb85c',
-          borderWidth: 0,
-          showLine: true,
-          data: [40, 0, 20, 10, 25, 15, 30, 0],
-          pointBackgroundColor: 'transparent',
-        },
-        {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#f0ad4e',
-          borderWidth: 0,
-          showLine: true,
-          data: [10, 40, 20, 5, 35, 15, 35, 0],
-          pointBackgroundColor: 'transparent',
-        },
-        {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#337ab7',
-          borderWidth: 0,
-          showLine: true,
-          data: [0, 30, 10, 25, 10, 40, 20, 0],
-          pointBackgroundColor: 'transparent',
-        }
+            label: "Lost",
+            fill: false,
+            lineTension: .5,
+            pointBorderColor: "transparent",
+            pointColor: "white",
+            borderColor: '#d9534f',
+            borderWidth: 0,
+            showLine: true,
+            data: [0, 40, 10, 30, 10, 20, 15, 20],
+            pointBackgroundColor: 'transparent',
+          }, {
+            label: "Lost",
+            fill: false,
+            lineTension: .5,
+            pointColor: "white",
+            borderColor: '#5cb85c',
+            borderWidth: 0,
+            showLine: true,
+            data: [40, 0, 20, 10, 25, 15, 30, 0],
+            pointBackgroundColor: 'transparent',
+          },
+          {
+            label: "Lost",
+            fill: false,
+            lineTension: .5,
+            pointColor: "white",
+            borderColor: '#f0ad4e',
+            borderWidth: 0,
+            showLine: true,
+            data: [10, 40, 20, 5, 35, 15, 35, 0],
+            pointBackgroundColor: 'transparent',
+          },
+          {
+            label: "Lost",
+            fill: false,
+            lineTension: .5,
+            pointColor: "white",
+            borderColor: '#337ab7',
+            borderWidth: 0,
+            showLine: true,
+            data: [0, 30, 10, 25, 10, 40, 20, 0],
+            pointBackgroundColor: 'transparent',
+          }
         ]
       },
     });
@@ -791,11 +791,7 @@ export async function pageBets() {
   Number.prototype.random = () => ~~(Math.random() * 5);
   var htmlTeams = Array.from(document.getElementsByClassName("tournament-bracket__number"));
 
-  let pairs = htmlTeams.map(x => parseInt(x.innerHTML).random()).reduce((all, one, i) => {
-    const ch = Math.floor(i / 2);
-    all[ch] = [].concat((all[ch] || []), one);
-    return all;
-  }, []);
+
 
 
   console.log(pairs);
