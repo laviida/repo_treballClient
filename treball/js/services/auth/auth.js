@@ -1,6 +1,6 @@
-import { getCookie, setCookie } from "./modules/cookies.js";
-import { Token } from "./model/token.js";
-import { User } from "./model/user.js";
+import { getCookie, setCookie } from "../../utils/cookies.js";
+import { Token } from "../../model/token.js";
+import { User } from "../../model/user.js";
 
 export const VALID_USER = "VALID_USER";
 export const NOT_VALID_USER = "NOT_VALID_USER";

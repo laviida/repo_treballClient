@@ -1134,7 +1134,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Canada">CAN</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
@@ -1170,7 +1170,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>
@@ -1205,7 +1205,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Finland">FIN</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-fi" aria-label="Flag"></span>
@@ -1241,7 +1241,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Russia">RUS</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-ru" aria-label="Flag"></span>
@@ -1290,7 +1290,7 @@ function tournament() {
                     <span class="tournament-bracket__number">1</span>
                   </td>
                 </tr>
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>
@@ -1326,7 +1326,7 @@ function tournament() {
                     <span class="tournament-bracket__number">4</span>
                   </td>
                 </tr>
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Russia">RUS</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-ru" aria-label="Flag"></span>
@@ -1357,7 +1357,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Finland">FIN</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-fi" aria-label="Flag"></span>
@@ -1398,7 +1398,7 @@ function tournament() {
                 </tr>
               </thead>  
               <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
+                <tr class="tournament-bracket__team ">
                   <td class="tournament-bracket__country">
                     <abbr class="tournament-bracket__code" title="Czech Republic">CZE</abbr>
                     <span class="tournament-bracket__flag flag-icon flag-icon-cz" aria-label="Flag"></span>

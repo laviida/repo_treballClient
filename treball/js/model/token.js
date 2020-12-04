@@ -1,4 +1,4 @@
-import { getKey, TOKEN_KEY } from "../credentials.js";
+import { getKey, TOKEN_KEY } from "../services/auth/credentials.js";
 
 export class Token {
     static ALGORITHMS = { HS256: "HS256" };

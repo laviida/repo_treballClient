@@ -1,6 +1,14 @@
-import { getCookie } from "./modules/cookies.js";
-import { playerCard, teamCard, inlineNews } from "./htmlData.js";
-import { isLogged } from "./auth.js";
+import {
+  getCookie
+} from "./cookies.js";
+import {
+  playerCard,
+  teamCard,
+  inlineNews
+} from "../views/htmlData.js";
+import {
+  isLogged
+} from "../services/auth/auth.js";
 
 export function loadJSON(name) {
   return new Promise((resolve, reject) => {
@@ -80,38 +88,35 @@ export function setMap(container, keywords) {
   mapElement.setAttribute("id", "mapid");
   container.insertBefore(mapElement, container.childNodes[0]);
 
-  var mymap = L.map('mapid').setView([0, 0], 2);
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1Ijoic2VyZ2ljbiIsImEiOiJja2hjMnRsbWkwNXJ0MnNta25nYjV0M3Y2In0.0PgDzmHjsMxpo_JKaxrZOg'
-  }).addTo(mymap);
+  function createMap() {
+    var mymap = L.map('mapid').setView([0, 0], 2);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1Ijoic2VyZ2ljbiIsImEiOiJja2hjMnRsbWkwNXJ0MnNta25nYjV0M3Y2In0.0PgDzmHjsMxpo_JKaxrZOg'
+    }).addTo(mymap);
 
-  var query_addr = "United States, " + keywords.join(", ");
-  // Get the provider, in this case the OpenStreetMap (OSM) provider.
-  const provider = new window.GeoSearch.OpenStreetMapProvider()
-  // Query for the address
-  var query_promise = provider.search({
-    query: query_addr
-  });
-  // Wait until we have an answer on the Promise
-  query_promise.then(value => {
-    for (var i = 0; i < value.length; i++) {
-      // Success!
-      var x_coor = value[i].x;
-      var y_coor = value[i].y;
-      var label = value[i].label;
-      // Create a marker for the found coordinates
-      var marker = L.marker([y_coor, x_coor]).addTo(mymap) // CAREFULL!!! The first position corresponds to the lat (y) and the second to the lon (x)
-      // Add a popup to said marker with the address found by geosearch (not the one from the user)
-      marker.bindPopup("<b>Found location</b><br>" + label).openPopup();
-    };
-  }, reason => {
-    console.log(reason); // Error!
-  });
+    var query_addr = "United States, " + keywords.join(", ");
+    const provider = new window.GeoSearch.OpenStreetMapProvider()
+    var query_promise = provider.search({
+      query: query_addr
+    });
+    query_promise.then(value => {
+      for (var i = 0; i < value.length; i++) {
+        var x_coor = value[i].x;
+        var y_coor = value[i].y;
+        var label = value[i].label;
+        var marker = L.marker([y_coor, x_coor]).addTo(mymap);
+        marker.bindPopup("<b>Found location</b><br>" + label).openPopup();
+      };
+    }, reason => {
+      console.log(reason);
+    });
+  }
+  createMap();
 }
 
 export function setBodyBackground(background) {
@@ -172,5 +177,5 @@ export function changeScrollBar(show) {
   }
   ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.3);
-  }</style>`: document.getElementById("changedScrollBar").remove();
+  }</style>` : document.getElementById("changedScrollBar").remove();
 }
