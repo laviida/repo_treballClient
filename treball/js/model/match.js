@@ -1,12 +1,12 @@
-export {
-    Match
-}
+export { Match }
 class Match {
-
-    constructor(home, away) {
-        this.CSS_CLASS_WINNER = "tournament-bracket__team--winner";
+    constructor(home, away, round = 0) {
         this.home = home;
         this.away = away;
+        this.winner = null;
+        this.loser = null;
+        this.score = null;
+        this.round = round;
     }
 
     play() {
@@ -14,11 +14,9 @@ class Match {
         let aScore = ~~(Math.random() * 5);
 
         if (hScore != aScore)
-            Math.max(hScore, aScore) == hScore ? this.home.setStyle(this.CSS_CLASS_WINNER) : this.away.setStyle(this.CSS_CLASS_WINNER);
-        else Math.random() > 0.5 ? this.home.setStyle(this.CSS_CLASS_WINNER) : this.away.setStyle(this.CSS_CLASS_WINNER);
-        this.home.setScore(hScore);
-        this.away.setScore(aScore);
+            Math.max(hScore, aScore) == hScore ? (this.winner = this.home, this.loser = this.away) : (this.winner = this.away, this.loser = this.home);
+        else Math.random() > 0.5 ? (this.winner = this.home, this.loser = this.away) : (this.winner = this.away, this.loser = this.home);
+        this.score = { score_home: hScore, score_away: aScore };
     }
-
 
 }
