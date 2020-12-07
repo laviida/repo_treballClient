@@ -1,5 +1,5 @@
 export { Tournament }
-import { tournament, quarterFinals, semiFinals, bronzeFinal, goldFinal } from "../views/htmlData.js";
+import { tournament, roundOf16Finals, quarterFinals, semiFinals, bronzeFinal, goldFinal } from "../views/htmlData.js";
 import { loadJSON } from "../utils/utils.js";
 import { Team } from "./team.js";
 import { Pair } from "./pair.js";
@@ -27,14 +27,22 @@ class Tournament {
         throw Error('Assert failed: ' + (message || ''));
     };
 
-    // de moment poden haver repetits en el mode random
+    getIndexTeams(num_teams, length) {
+        let index_teams = Array.from({ length: num_teams }, () => ~~(Math.random() * length));
+        index_teams = Array.from(new Set(index_teams));
+        return index_teams;
+    }
+
     async createTournament() {
-        ![2, 4, 8].includes(this.num_teams) ? this.assert("num_teams must be 2, 4, 8") : "";
+        ![2, 4, 8, 16].includes(this.num_teams) ? this.assert("num_teams must be 2, 4, 8, 16") : "";
         this.paint();
         if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM) {
             var _teams = [];
             await loadJSON("../json/teams_players.json").then((response) => (_teams = JSON.parse(response)));
-            this.teams = Array.from({ length: this.num_teams }, () => ~~(Math.random() * _teams.length)).map(x => new Team(_teams[x]));
+            let index_teams = this.getIndexTeams(this.num_teams, _teams.length);
+            while (index_teams.length != this.num_teams) index_teams = this.getIndexTeams(this.num_teams, _teams.length);
+            this.teams = index_teams.map(x => new Team(_teams[x]));
+
 
             for (let index = 0; index < this.num_teams; index++) {
                 if (index % 2 != 0) this.brackets.push(new Pair(this.teams[index - 1], this.teams[index]));
@@ -42,6 +50,32 @@ class Tournament {
             this.brackets.forEach(x => x.play());
             let winner_teams, loser_teams, bronze, gold;
             switch (this.num_teams) {
+                case 16:
+                    this.tournament_root_element.innerHTML += roundOf16Finals(this.brackets.map(x => x.paint()));
+
+                    winner_teams = this.brackets.map(x => x.winner);
+                    this.brackets = [];
+                    this.brackets.push(new Pair(winner_teams[0], winner_teams[1]), new Pair(winner_teams[2], winner_teams[3]),
+                        new Pair(winner_teams[4], winner_teams[5]), new Pair(winner_teams[6], winner_teams[7]));
+                    this.brackets.forEach(x => x.play());
+                    this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
+
+                    winner_teams = this.brackets.map(x => x.winner);
+                    this.brackets = [];
+                    this.brackets.push(new Pair(winner_teams[0], winner_teams[1]), new Pair(winner_teams[2], winner_teams[3]));
+                    this.brackets.forEach(x => x.play());
+                    this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
+
+                    loser_teams = this.brackets.map(x => x.loser);
+                    bronze = new Pair(loser_teams[0], loser_teams[1]);
+                    bronze.play();
+                    this.tournament_root_element.innerHTML += bronzeFinal([bronze].map(x => x.paint()));
+
+                    winner_teams = this.brackets.map(x => x.winner);
+                    gold = new Pair(winner_teams[0], winner_teams[1]);
+                    gold.play();
+                    this.tournament_root_element.innerHTML += goldFinal([gold].map(x => x.paint()));
+                    break;
                 case 8:
                     this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
 
@@ -81,7 +115,6 @@ class Tournament {
                     break;
             }
             this.paintWinners();
-
         }
     }
 
@@ -93,8 +126,6 @@ class Tournament {
     paintWinners() {
         Array.from(document.getElementsByClassName('tournament-bracket__winner')).forEach(x => {
             x.getElementsByClassName('tournament-bracket__score')[0].classList.add(Tournament.TOURNAMENT_CSS_CLASS_WINNER);
-
-
         });
     }
 

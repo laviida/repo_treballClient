@@ -1,7 +1,7 @@
 export {
   getBody_home, getTitle_pageTeam, getBody_login, getBody_pageContact, getBody_about, getBody_live,
   getBody_pageNews, getBody_pageProfile, loader, playerCard, teamCard, inlineNews, getBody_AdminPage, getBody_RegisterPage,
-  tournament, tournament_bracket, quarterFinals, semiFinals, bronzeFinal, goldFinal
+  tournament, tournament_bracket, quarterFinals, semiFinals, bronzeFinal, goldFinal, roundOf16Finals
 };
 
 function getBody_home() {
@@ -1161,6 +1161,17 @@ function tournament_bracket(bracket) {
  * 
  * @param {*} brackets ==> array de tournament_bracket
  */
+function roundOf16Finals(brackets) {
+  return `<div class="tournament-bracket__round tournament-bracket__round--round16finals">
+  <h3 class="tournament-bracket__round-title">Round of 16</h3>
+  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul>
+  </div>`;
+}
+
+/**
+ * 
+ * @param {*} brackets ==> array de tournament_bracket
+ */
 function quarterFinals(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
   <h3 class="tournament-bracket__round-title">Quarterfinals</h3>
@@ -1198,9 +1209,8 @@ function goldFinal(brackets) {
   <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul></div>`;
 }
 
-
 function tournament() {
-  return `<div class="container">
+  return `<div class="container my-5">
   <div class="tournament-bracket tournament-bracket--rounded">                                                     
   </div>
 </div>`;

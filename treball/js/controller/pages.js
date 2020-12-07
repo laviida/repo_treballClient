@@ -784,11 +784,43 @@ export async function pageBets() {
   Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
   Utils.showHideSearchBar(false);
   Utils.changeNavbarRightButtons();
-  document.getElementById('content').classList.add("wh100");
-  document.getElementById('page').classList.add("wh100");
 
-  let tournament = new Tournament(Tournament.TOURNAMENT_MODE.FINALS, Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM, 8, document.getElementById('page'));
+  let tournament = new Tournament(Tournament.TOURNAMENT_MODE.FINALS, Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM, 16, document.getElementById('page'));
   tournament.createTournament();
 
   Utils.checkHeightWindowBody();
+
+  setTimeout(() => {
+    let elements = Array.from(document.querySelectorAll('.tournament-bracket__code'));
+    elements.forEach(x => {
+      x.addEventListener("click", (e) => {
+        elements.forEach(x => {
+          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
+          x.classList.remove("green");
+        });
+        let clicked_code = e.target.innerHTML;
+        Array.from(document.querySelectorAll('.tournament-bracket__code')).filter(x => x.innerHTML == clicked_code).forEach(x => {
+          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("border_path");
+          x.classList.add("green");
+        });
+      });
+    });
+    window.addEventListener("click", (e) => {
+      if (!Array.from(e.target.classList).includes("tournament-bracket__code")) {
+        elements.forEach(x => {
+          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
+          x.classList.remove("green");
+        });
+      }
+    });
+    const _tippy = tippy(elements[elements.length - 1]);
+    _tippy.setContent('Click to see path');
+    _tippy.setProps({
+      arrow: true,
+      animation: 'fade',
+    });
+    _tippy.show();
+    setTimeout(() => _tippy.hide(), 5000);
+  }, 50);
+
 }
