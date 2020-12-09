@@ -29,7 +29,8 @@ import {
   getBody_pageProfile,
   loader,
   getBody_AdminPage,
-  getBody_RegisterPage
+  getBody_RegisterPage,
+  tournamentInnerNav
 } from "../views/htmlData.js";
 import {
   getCookie
@@ -785,42 +786,98 @@ export async function pageBets() {
   Utils.showHideSearchBar(false);
   Utils.changeNavbarRightButtons();
 
-  let tournament = new Tournament(Tournament.TOURNAMENT_MODE.FINALS, Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM, 16, document.getElementById('page'));
-  tournament.createTournament();
+  Utils.checkHeightWindowBody();
+
+}
+
+export function pageTournaments() {
+  Utils.clear();
+  Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
+  Utils.showHideSearchBar(false);
+  Utils.changeNavbarRightButtons();
+
+  document.getElementById('page').innerHTML += tournamentInnerNav();
+
+  let tournament;
+
+  //tournament nav controller
+  $("#tile-1 .nav-tabs a").click(function (e) {
+    var position = $(this).parent().position();
+    var width = $(this).parent().width();
+    $("#tile-1 .slider").css({ "left": + position.left, "width": width });
+    Utils.checkHeightWindowBody(true);
+    if (tournament) {
+      if (e.target.classList.contains("fa-trophy") || e.target.id == "classification-tab") {//classification tab
+        tournament.showToolTip();
+      } else {
+        tournament.tooltip = false;
+      }
+    }
+  });
+  var actWidth = $("#tile-1 .nav-tabs").find(".active").parent("li").width();
+  var actPosition = $("#tile-1 .nav-tabs .active").position();
+  $("#tile-1 .slider").css({ "left": + actPosition.left, "width": actWidth });
 
   Utils.checkHeightWindowBody();
 
-  setTimeout(() => {
-    let elements = Array.from(document.querySelectorAll('.tournament-bracket__code'));
-    elements.forEach(x => {
-      x.addEventListener("click", (e) => {
-        elements.forEach(x => {
-          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
-          x.classList.remove("green");
-        });
-        let clicked_code = e.target.innerHTML;
-        Array.from(document.querySelectorAll('.tournament-bracket__code')).filter(x => x.innerHTML == clicked_code).forEach(x => {
-          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("border_path");
-          x.classList.add("green");
-        });
-      });
-    });
-    window.addEventListener("click", (e) => {
-      if (!Array.from(e.target.classList).includes("tournament-bracket__code")) {
-        elements.forEach(x => {
-          x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
-          x.classList.remove("green");
-        });
-      }
-    });
-    const _tippy = tippy(elements[elements.length - 1]);
-    _tippy.setContent('Click to see path');
-    _tippy.setProps({
-      arrow: true,
-      animation: 'fade',
-    });
-    _tippy.show();
-    setTimeout(() => _tippy.hide(), 5000);
-  }, 50);
 
+  var conversationalForm = window.cf.ConversationalForm.startTheConversation({
+    formEl: document.getElementById("tournament_form"),
+    context: document.getElementById("create"),
+    userImage: "../../img/user.png",
+    robotImage: "../../img/MLB_logo.png",
+    dictionaryData: {
+      "group-placeholder": "Ecribe para filtrar ...",
+      "input-placeholder": "Ecribe tu respuesta aquí ..."
+
+    },
+    submitCallback: function () {
+      var formDataSerialized = conversationalForm.getFormData(true);
+      console.log(formDataSerialized);
+      tournament = new Tournament(formDataSerialized.tournament_type[0], formDataSerialized.tournament_mode[0],
+        parseInt(formDataSerialized.tournament_num_teams[0]), document.getElementById('classification'));
+      tournament.createTournament(formDataSerialized.teams);
+
+
+      conversationalForm.addRobotChatResponse("Torneo creado correctamente.");
+    },
+    flowStepCallback: async function (dto, success, error) {
+      let data = conversationalForm.getFormData(true);
+
+      if (dto.tag.name == "tournament_type" && dto.tag.value[0] == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.ARBITRARY) {
+        let _teams = [];
+        await Utils.loadJSON("../json/teams_players.json").then((response) => (_teams = JSON.parse(response)));
+        let children = [];
+        children = _teams.map(x => {
+          let child = { tag: "option", "cf-label": "", value: "", "cf-image": "" };
+          child["cf-label"] = x.Name;
+          child["value"] = x.TeamID;
+          child["cf-image"] = x.WikipediaLogoUrl;
+          return child;
+        });
+        conversationalForm.addTags([
+          {
+            tag: "select",
+            name: "teams",
+            "cf-questions":
+              "Elige los equipos que participarán en el torneo",
+            "cf-input-placeholder": "Filtrar equipos ...",
+            multiple: true,
+            children: children
+          }
+        ]);
+
+      } else if (dto.tag.name == "teams") {
+        if (dto.tag.value.length == data.tournament_num_teams) return success();
+        else return error();
+      }
+      console.log(dto);
+      console.log(success);
+      console.log(error);
+      return success();
+
+    },
+
+  });
+  console.log(conversationalForm);
 }

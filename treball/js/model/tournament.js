@@ -12,15 +12,85 @@ class Tournament {
     static TOURNAMENT_GOLD_FINAL_ROUND = 3;
     static TOURNAMENT_CSS_CLASS_WINNER = "tournament-bracket__team--winner";
 
-    constructor(type, teams_select, num_teams, parentHTML) {
+    constructor(teams_select, type, num_teams, parentHTML) {
         this.type = type;
         this.teams_select = teams_select;
         this.num_teams = num_teams;
         this.parentHTML = parentHTML;
         this.tournament_root_element = null;
-        this.teams = [];
+        this.json_teams = [];
         this.max_rounds = this.getMaxRounds();
         this.brackets = [];
+        this.tooltip = false;
+    }
+
+    async createTournament(arbitrary_teams_index = []) {
+        ![2, 4, 8, 16].includes(this.num_teams) ? this.assert("num_teams must be 2, 4, 8, 16") : "";
+        this.paint();
+        await loadJSON("../json/teams_players.json").then((response) => (this.json_teams = JSON.parse(response)));
+
+        if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM && this.type == Tournament.TOURNAMENT_MODE.FINALS) this.playTournamentFinals();
+        else if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.ARBITRARY && this.type == Tournament.TOURNAMENT_MODE.FINALS) {
+            this.json_teams = this.json_teams.filter(z => { if (arbitrary_teams_index.includes(z.TeamID.toString())) return z; });
+            this.playTournamentFinals();
+        } else if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM && this.type == Tournament.TOURNAMENT_MODE.LEAGUE) { } else { }
+
+        this.drawTeamPath();
+    }
+
+    playTournamentFinals() {
+        this.updateBrackets(false, true);
+
+        switch (this.num_teams) {
+            case 16:
+                this.tournament_root_element.innerHTML += roundOf16Finals(this.brackets.map(x => x.paint()));
+                this.updateBrackets();
+                this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
+                this.updateBrackets();
+                this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
+                this.updateBrackets(true, false);
+                this.tournament_root_element.innerHTML += bronzeFinal([this.brackets[1].paint()]);
+                this.tournament_root_element.innerHTML += goldFinal([this.brackets[0].paint()]);
+                break;
+            case 8:
+                this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
+                this.updateBrackets();
+                this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
+                this.updateBrackets(true, false);
+                this.tournament_root_element.innerHTML += bronzeFinal([this.brackets[1].paint()]);
+                this.tournament_root_element.innerHTML += goldFinal([this.brackets[0].paint()]);
+                break;
+            case 4:
+                this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
+                this.updateBrackets(true);
+                this.tournament_root_element.innerHTML += bronzeFinal([this.brackets[1].paint()]);
+                this.tournament_root_element.innerHTML += goldFinal([this.brackets[0].paint()]);
+                break;
+            case 2:
+                this.tournament_root_element.innerHTML += goldFinal(this.brackets.map(x => x.paint()));
+                break;
+            default:
+                break;
+        }
+        this.paintWinners();
+    }
+
+    updateBrackets(finals = false, init = false) {
+        if (init) {
+            let index_teams = this.getIndexTeams(this.num_teams, this.json_teams.length);
+            while (index_teams.length != this.num_teams) index_teams = this.getIndexTeams(this.num_teams, this.json_teams.length);
+            let init_teams = index_teams.map(x => new Team(this.json_teams[x]));
+            init_teams.forEach((x, idx, arr) => idx % 2 != 0 ? this.brackets.push(new Pair(arr[idx - 1], x)) : "");
+        } else {
+            let winner_teams = this.brackets.map(x => x.winner);
+            let losers_teams = this.brackets.map(x => x.loser);
+            this.brackets = [];
+            console.log(winner_teams, losers_teams);
+            finals ? winner_teams.concat(losers_teams).forEach((x, idx, arr) => idx % 2 != 0 ? this.brackets.push(new Pair(arr[idx - 1], x)) : "")
+                : winner_teams.forEach((x, idx) => idx % 2 != 0 ? this.brackets.push(new Pair(winner_teams[idx - 1], x)) : "");
+
+        }
+        this.brackets.forEach(x => x.play());
     }
 
     assert(message) {
@@ -31,91 +101,6 @@ class Tournament {
         let index_teams = Array.from({ length: num_teams }, () => ~~(Math.random() * length));
         index_teams = Array.from(new Set(index_teams));
         return index_teams;
-    }
-
-    async createTournament() {
-        ![2, 4, 8, 16].includes(this.num_teams) ? this.assert("num_teams must be 2, 4, 8, 16") : "";
-        this.paint();
-        if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM) {
-            var _teams = [];
-            await loadJSON("../json/teams_players.json").then((response) => (_teams = JSON.parse(response)));
-            let index_teams = this.getIndexTeams(this.num_teams, _teams.length);
-            while (index_teams.length != this.num_teams) index_teams = this.getIndexTeams(this.num_teams, _teams.length);
-            this.teams = index_teams.map(x => new Team(_teams[x]));
-
-
-            for (let index = 0; index < this.num_teams; index++) {
-                if (index % 2 != 0) this.brackets.push(new Pair(this.teams[index - 1], this.teams[index]));
-            }
-            this.brackets.forEach(x => x.play());
-            let winner_teams, loser_teams, bronze, gold;
-            switch (this.num_teams) {
-                case 16:
-                    this.tournament_root_element.innerHTML += roundOf16Finals(this.brackets.map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    this.brackets = [];
-                    this.brackets.push(new Pair(winner_teams[0], winner_teams[1]), new Pair(winner_teams[2], winner_teams[3]),
-                        new Pair(winner_teams[4], winner_teams[5]), new Pair(winner_teams[6], winner_teams[7]));
-                    this.brackets.forEach(x => x.play());
-                    this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    this.brackets = [];
-                    this.brackets.push(new Pair(winner_teams[0], winner_teams[1]), new Pair(winner_teams[2], winner_teams[3]));
-                    this.brackets.forEach(x => x.play());
-                    this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
-
-                    loser_teams = this.brackets.map(x => x.loser);
-                    bronze = new Pair(loser_teams[0], loser_teams[1]);
-                    bronze.play();
-                    this.tournament_root_element.innerHTML += bronzeFinal([bronze].map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    gold = new Pair(winner_teams[0], winner_teams[1]);
-                    gold.play();
-                    this.tournament_root_element.innerHTML += goldFinal([gold].map(x => x.paint()));
-                    break;
-                case 8:
-                    this.tournament_root_element.innerHTML += quarterFinals(this.brackets.map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    this.brackets = [];
-                    this.brackets.push(new Pair(winner_teams[0], winner_teams[1]), new Pair(winner_teams[2], winner_teams[3]));
-                    this.brackets.forEach(x => x.play());
-                    this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
-
-                    loser_teams = this.brackets.map(x => x.loser);
-                    bronze = new Pair(loser_teams[0], loser_teams[1]);
-                    bronze.play();
-                    this.tournament_root_element.innerHTML += bronzeFinal([bronze].map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    gold = new Pair(winner_teams[0], winner_teams[1]);
-                    gold.play();
-                    this.tournament_root_element.innerHTML += goldFinal([gold].map(x => x.paint()));
-                    break;
-                case 4:
-                    this.tournament_root_element.innerHTML += semiFinals(this.brackets.map(x => x.paint()));
-
-                    loser_teams = this.brackets.map(x => x.loser);
-                    bronze = new Pair(loser_teams[0], loser_teams[1]);
-                    bronze.play();
-                    this.tournament_root_element.innerHTML += bronzeFinal([bronze].map(x => x.paint()));
-
-                    winner_teams = this.brackets.map(x => x.winner);
-                    gold = new Pair(winner_teams[0], winner_teams[1]);
-                    gold.play();
-                    this.tournament_root_element.innerHTML += goldFinal([gold].map(x => x.paint()));
-                    break;
-                case 2:
-                    this.tournament_root_element.innerHTML += goldFinal(this.brackets.map(x => x.paint()));
-                    break;
-                default:
-                    break;
-            }
-            this.paintWinners();
-        }
     }
 
     paint() {
@@ -137,5 +122,49 @@ class Tournament {
             count++;
         }
         this.max_rounds = count;
+    }
+
+    drawTeamPath() {
+        setTimeout(() => {
+            let elements = Array.from(document.querySelectorAll('.tournament-bracket__code'));
+            elements.forEach(x => {
+                x.addEventListener("click", (e) => {
+                    elements.forEach(x => {
+                        x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
+                        x.classList.remove("green");
+                    });
+                    let clicked_code = e.target.innerHTML;
+                    Array.from(document.querySelectorAll('.tournament-bracket__code')).filter(x => x.innerHTML == clicked_code).forEach(x => {
+                        x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("border_path");
+                        x.classList.add("green");
+                    });
+                });
+            });
+            window.addEventListener("click", (e) => {
+                if (!Array.from(e.target.classList).includes("tournament-bracket__code")) {
+                    elements.forEach(x => {
+                        x.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove("border_path");
+                        x.classList.remove("green");
+                    });
+                }
+            });
+        }, 50);
+    }
+
+    showToolTip() {
+        let element = Array.from(document.querySelectorAll('.tournament-bracket__code'))[0];
+        const _tippy = tippy(element);
+        _tippy.setContent('Click to see path');
+        _tippy.setProps({
+            arrow: true,
+            animation: 'fade',
+        });
+        window.addEventListener("scroll", () => {
+            if (this.tooltip) return;
+            this.tooltip = true;
+            _tippy.show();
+            setTimeout(() => _tippy.hide(), 5000);
+        });
+
     }
 }

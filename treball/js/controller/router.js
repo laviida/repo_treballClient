@@ -25,6 +25,7 @@ class Router {
       admin: { path: "/admin" },
       register: { path: "/register" },
       bets: { path: "/bets" },
+      tournaments: { path: "/tournaments" },
     };
     this.initRouter();
   }
@@ -59,6 +60,7 @@ class Router {
     else if (page == "admin") Pager.pageAdmin();
     else if (page == "register") Pager.pageRegister();
     else if (page == "bets") Pager.pageBets();
+    else if (page == "tournaments") Pager.pageTournaments();
     else if (page == "logout") {
       logout();
       Pager.pageLogin();

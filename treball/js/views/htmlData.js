@@ -1,7 +1,7 @@
 export {
   getBody_home, getTitle_pageTeam, getBody_login, getBody_pageContact, getBody_about, getBody_live,
   getBody_pageNews, getBody_pageProfile, loader, playerCard, teamCard, inlineNews, getBody_AdminPage, getBody_RegisterPage,
-  tournament, tournament_bracket, quarterFinals, semiFinals, bronzeFinal, goldFinal, roundOf16Finals
+  tournament, tournament_bracket, quarterFinals, semiFinals, bronzeFinal, goldFinal, roundOf16Finals, tournamentInnerNav
 };
 
 function getBody_home() {
@@ -1213,5 +1213,94 @@ function tournament() {
   return `<div class="container my-5">
   <div class="tournament-bracket tournament-bracket--rounded">                                                     
   </div>
+</div>`;
+}
+
+function tournamentInnerNav() {
+  return `<div class="tile" id="tile-1">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <div class="slider"></div>
+     <li class="nav-item">
+        <a class="nav-link active" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="create" aria-selected="true"><i class="fas fa-edit"></i> Create Tournament</a>
+      </li>
+    <li class="nav-item">
+        <a class="nav-link" id="classification-tab" data-toggle="tab" href="#classification" role="tab" aria-controls="classification" aria-selected="false"><i class="fas fa-trophy"></i> Classification</a>
+      </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="create" role="tabpanel" aria-labelledby="create-tab">
+
+    <form id="tournament_form">
+  <fieldset>
+    <label for="tournament_name">Hola! Escribe el nombre del torneo. 😊</label>
+    <input required cf-questions="Hola! Escribe el nombre del torneo. 😊" type="text" class="form-control" name="tournament_name" id="tournament_name" />
+  </fieldset>
+
+  <fieldset>
+  <label for="tournament_num_teams">{previous-answer}, es un nombre genial! Elige el el número de equipos para el torneo:</label>
+  <div class="radio" >
+  <label>
+    <input cf-questions="{previous-answer}, es un nombre genial! Elige el el número de equipos para el torneo:" type="radio" name="tournament_num_teams" id="tournament_num_teams-1" value="2">
+    2
+  </label>
+</div>
+<div class="radio" >
+<label>
+  <input cf-questions="{previous-answer}, es un nombre genial! Elige el el número de equipos para el torneo:" type="radio" name="tournament_num_teams" id="tournament_num_teams-2" value="4">
+  4
+</label>
+</div>
+<div class="radio" >
+<label>
+  <input cf-questions="{previous-answer}, es un nombre genial! Elige el el número de equipos para el torneo:" type="radio" name="tournament_num_teams" id="tournament_num_teams-3" value="8">
+  8
+</label>
+</div>
+<div class="radio" >
+<label>
+  <input cf-questions="{previous-answer}, es un nombre genial! Elige el el número de equipos para el torneo:" type="radio" name="tournament_num_teams" id="tournament_num_teams-4" value="16">
+  16
+</label>
+</div>
+  </fieldset>
+
+  <fieldset >
+    <label for="tournament_mode">Modo de Torneo</label>
+    <div class="radio" >
+      <label>
+        <input cf-questions="Has elegido {previous-answer} equipos para el torneo! Elige el modo de torneo:" type="radio" name="tournament_mode" id="tournament_mode-1" value="FINALS">
+        Finales
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="tournament_mode" id="tournament_mode-2" value="LEAGUE">
+        Liga
+      </label>
+    </div>
+  <fieldset>
+    <label for="tournament_type">Tipo de Torneo</label>
+    <div class="radio" >
+      <label>
+        <input cf-questions="Has elegido el modo {previous-answer}! Elige ahora el tipo de torneo:" type="radio" name="tournament_type" id="tournament_type-1" value="RANDOM">
+        Aleatorio
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="tournament_type" id="tournament_type-2" value="ARBITRARY">
+        Arbitrario
+      </label>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="classification" role="tabpanel" aria-labelledby="classification-tab"></div>
+
+    </div>
+  </div>
+  
+
 </div>`;
 }
