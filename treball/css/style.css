@@ -2135,6 +2135,7 @@ body {
   transition: .3s;
   margin-left: 290px;
   background-color: #2a2b3d;
+  height: 100vh;
 }
 
 /* Start side navigation bar  */

@@ -1,7 +1,27 @@
 export {
-  getBody_home, getTitle_pageTeam, getBody_login, getBody_pageContact, getBody_about, getBody_live,
-  getBody_pageNews, getBody_pageProfile, loader, playerCard, teamCard, inlineNews, getBody_AdminPage, getBody_RegisterPage,
-  tournament, tournament_bracket, quarterFinals, semiFinals, bronzeFinal, goldFinal, roundOf16Finals, tournamentInnerNav
+  getBody_home,
+  getTitle_pageTeam,
+  getBody_login,
+  getBody_pageContact,
+  getBody_about,
+  getBody_live,
+  getBody_pageNews,
+  getBody_pageProfile,
+  loader,
+  playerCard,
+  teamCard,
+  inlineNews,
+  getBody_AdminPage,
+  getBody_RegisterPage,
+  tournament,
+  tournament_bracket,
+  quarterFinals,
+  semiFinals,
+  bronzeFinal,
+  goldFinal,
+  roundOf16Finals,
+  tournamentInnerNav,
+  baseSectionAdmin
 };
 
 function getBody_home() {
@@ -838,10 +858,10 @@ function getBody_AdminPage() {
     <li><i class="far fa-life-ring"></i><a href="#"> Subscribe us</a>
     <i class="fas fa-chevron-left chevron-left"></i>
     </li>
-    <li><i class="fa fa-envelope fa-fw"></i><a href="#"> Contact us</a>
+    <li id="statsList"><i class="fas fa-chart-bar fa-fw"></i><a> Estadísticas</a>
     <i class="fas fa-chevron-left chevron-left"></i>
     </li>
-    <li><i class="fa fa-users fa-fw"></i><a href="#"> Our team</a>
+    <li id="usersList"><i class="fa fa-users fa-fw"></i><a> Lista de usuarios</a>
     <i class="fas fa-chevron-left chevron-left"></i>
     </li>
     <li><i class="fa fa-bolt fa-fw"></i><a href="#"> Testimonials</a>
@@ -1164,7 +1184,7 @@ function tournament_bracket(bracket) {
 function roundOf16Finals(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--round16finals">
   <h3 class="tournament-bracket__round-title">Round of 16</h3>
-  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul>
+  <ul class="tournament-bracket__list">` + brackets.join("") + `</ul>
   </div>`;
 }
 
@@ -1175,7 +1195,7 @@ function roundOf16Finals(brackets) {
 function quarterFinals(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
   <h3 class="tournament-bracket__round-title">Quarterfinals</h3>
-  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul>
+  <ul class="tournament-bracket__list">` + brackets.join("") + `</ul>
   </div>`;
 }
 
@@ -1186,7 +1206,7 @@ function quarterFinals(brackets) {
 function semiFinals(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--semifinals">
   <h3 class="tournament-bracket__round-title">Semifinals</h3>
-  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul></div>`;
+  <ul class="tournament-bracket__list">` + brackets.join("") + `</ul></div>`;
 }
 
 /**
@@ -1196,7 +1216,7 @@ function semiFinals(brackets) {
 function bronzeFinal(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--bronze">
   <h3 class="tournament-bracket__round-title">Bronze medal game</h3>
-  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul></div>`;
+  <ul class="tournament-bracket__list">` + brackets.join("") + `</ul></div>`;
 }
 
 /**
@@ -1206,7 +1226,7 @@ function bronzeFinal(brackets) {
 function goldFinal(brackets) {
   return `<div class="tournament-bracket__round tournament-bracket__round--gold">
   <h3 class="tournament-bracket__round-title">Gold medal game</h3>
-  <ul class="tournament-bracket__list">`+ brackets.join("") + `</ul></div>`;
+  <ul class="tournament-bracket__list">` + brackets.join("") + `</ul></div>`;
 }
 
 function tournament() {
@@ -1303,4 +1323,14 @@ function tournamentInnerNav() {
   
 
 </div>`;
+}
+
+function baseSectionAdmin(columns) {
+  return `<section class="welcome">
+  <div class="container-fluid">
+    <div class="row">
+    ${columns}
+    </div>
+  </div>
+</section>`;
 }

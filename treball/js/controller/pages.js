@@ -1,5 +1,10 @@
 import * as Utils from "../utils/utils.js";
-import { Tournament } from "../model/tournament.js";
+import {
+  CustomChart
+} from "../model/chart.js";
+import {
+  Tournament
+} from "../model/tournament.js";
 
 import {
   getKey,
@@ -16,7 +21,7 @@ import {
   REGEX_REGISTER_PASSWORD_ERROR,
   REGEX_REGISTER_EMAIL_ERROR,
   REGEX_REGISTER_LNAME_ERROR,
-  register
+  register,
 } from "../services/auth/auth.js";
 import {
   getBody_home,
@@ -30,7 +35,8 @@ import {
   loader,
   getBody_AdminPage,
   getBody_RegisterPage,
-  tournamentInnerNav
+  tournamentInnerNav,
+  baseSectionAdmin,
 } from "../views/htmlData.js";
 import {
   getCookie
@@ -62,9 +68,12 @@ export async function pageTeams() {
   Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
   Utils.showHideSearchBar(true);
   Utils.changeNavbarRightButtons();
-  var row = Utils.createElement("div", {
-    class: "row justify-content-center",
-  }, "");
+  var row = Utils.createElement(
+    "div", {
+      class: "row justify-content-center",
+    },
+    ""
+  );
   var teams = [];
   await Utils.loadJSON("../json/teams_players.json").then((response) => (teams = JSON.parse(response)));
   teams.forEach((team) => {
@@ -101,12 +110,18 @@ export function pageTeam(team) {
   Utils.setBodyBackground("linear-gradient(180deg, #" + team.PrimaryColor + ", #" + team.SecondaryColor + ", #" + team.TertiaryColor + ")");
   Utils.showHideSearchBar(true);
   Utils.changeNavbarRightButtons();
-  var container = Utils.createElement("div", {
-    class: "container",
-  }, "");
-  var row = Utils.createElement("div", {
-    class: "row",
-  }, "");
+  var container = Utils.createElement(
+    "div", {
+      class: "container",
+    },
+    ""
+  );
+  var row = Utils.createElement(
+    "div", {
+      class: "row",
+    },
+    ""
+  );
   team.players.forEach((player) => (row.innerHTML += Utils.drawPlayerCard(player)));
   container.appendChild(row);
   document.getElementById("page").appendChild(container);
@@ -162,7 +177,7 @@ export function pageLogin() {
     let loginValues = Array.from(document.querySelectorAll(".classlogin")).map((x) => x.value);
     let result = await login({
       user: loginValues[0],
-      password: loginValues[1]
+      password: loginValues[1],
     });
     if (result == VALID_USER) new Router().load(loginValues[0] == "admin" ? loginValues[0] : "home");
   });
@@ -197,18 +212,22 @@ export async function pageNews() {
   var json_news = await Utils.loadJSON("../json/News.json");
   var url = "https://randomuser.me/api/?results=" + JSON.parse(json_news).length;
   var users = [];
-  await fetch(url).then((response) => response.json()).then((data) => (users = data.results));
+  await fetch(url)
+    .then((response) => response.json())
+    .then((data) => (users = data.results));
   document.getElementById("page").innerHTML += getBody_pageNews(json_news, users);
   $(".dropdown").dropdown();
-  document.querySelectorAll("label.rating__star").forEach(element => element.addEventListener("click", function (e) {
-    var clicked_node = this;
-    var nodes = document.querySelectorAll("label[data-id='" + clicked_node.dataset.id + "']");
-    var clicked_index = parseInt(clicked_node.classList[1].charAt(clicked_node.classList[1].length - 1));
-    for (let index = 0; index < 5; index++) {
-      if ((index + 1) <= clicked_index) nodes[index].classList.replace("rating__star", "rating__filled-stars");
-      else nodes[index].classList.replace("rating__filled-stars", "rating__star");
-    }
-  }));
+  document.querySelectorAll("label.rating__star").forEach((element) =>
+    element.addEventListener("click", function (e) {
+      var clicked_node = this;
+      var nodes = document.querySelectorAll("label[data-id='" + clicked_node.dataset.id + "']");
+      var clicked_index = parseInt(clicked_node.classList[1].charAt(clicked_node.classList[1].length - 1));
+      for (let index = 0; index < 5; index++) {
+        if (index + 1 <= clicked_index) nodes[index].classList.replace("rating__star", "rating__filled-stars");
+        else nodes[index].classList.replace("rating__filled-stars", "rating__star");
+      }
+    })
+  );
   Utils.checkHeightWindowBody();
 }
 
@@ -258,77 +277,77 @@ export async function pageLive() {
             name: "MLB",
             provider_value: "sr:tournament:109",
             matches: [{
-              id: 20599,
-              name: "Pittsburgh Pirates VS Philadelphia Phillies",
-              schedule: "2019-08-27T23:05:00+00:00",
-              home_abbreviation: "PHI",
-              away_abbreviation: "PIT",
-              odds: {
-                home_ml: -147,
-                favourite_team: "PHI",
-                spread: "1.5",
-                total: "10",
-                away_ml: "+125",
+                id: 20599,
+                name: "Pittsburgh Pirates VS Philadelphia Phillies",
+                schedule: "2019-08-27T23:05:00+00:00",
+                home_abbreviation: "PHI",
+                away_abbreviation: "PIT",
+                odds: {
+                  home_ml: -147,
+                  favourite_team: "PHI",
+                  spread: "1.5",
+                  total: "10",
+                  away_ml: "+125",
+                },
               },
-            },
-            {
-              id: 20610,
-              name: "Baltimore Orioles VS Washington Nationals",
-              schedule: "2019-08-27T23:05:00+00:00",
-              home_abbreviation: "WSH",
-              away_abbreviation: "BAL",
-              odds: {
-                total: "9.5",
-                home_ml: -333,
-                favourite_team: "WSH",
-                spread: "1.5",
-                away_ml: "+265",
+              {
+                id: 20610,
+                name: "Baltimore Orioles VS Washington Nationals",
+                schedule: "2019-08-27T23:05:00+00:00",
+                home_abbreviation: "WSH",
+                away_abbreviation: "BAL",
+                odds: {
+                  total: "9.5",
+                  home_ml: -333,
+                  favourite_team: "WSH",
+                  spread: "1.5",
+                  away_ml: "+265",
+                },
               },
-            },
-            {
-              id: 20601,
-              name: "Chicago Cubs VS New York Mets",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "NYM",
-              away_abbreviation: "CHC",
-              odds: {
-                total: "8",
-                away_ml: -116,
-                favourite_team: "CHC",
-                spread: "1.5",
-                home_ml: -105,
+              {
+                id: 20601,
+                name: "Chicago Cubs VS New York Mets",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "NYM",
+                away_abbreviation: "CHC",
+                odds: {
+                  total: "8",
+                  away_ml: -116,
+                  favourite_team: "CHC",
+                  spread: "1.5",
+                  home_ml: -105,
+                },
               },
-            },
-            {
-              id: 20604,
-              name: "Cleveland Indians VS Detroit Tigers",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "DET",
-              away_abbreviation: "CLE",
-              odds: {
-                favourite_team: "CLE",
-                spread: "1.5",
-                total: "9.5",
-                home_ml: "+145",
-                away_ml: -167,
+              {
+                id: 20604,
+                name: "Cleveland Indians VS Detroit Tigers",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "DET",
+                away_abbreviation: "CLE",
+                odds: {
+                  favourite_team: "CLE",
+                  spread: "1.5",
+                  total: "9.5",
+                  home_ml: "+145",
+                  away_ml: -167,
+                },
               },
-            },
-            {
-              id: 20600,
-              name: "Cincinnati Reds VS Miami Marlins",
-              schedule: "2019-08-27T23:10:00+00:00",
-              home_abbreviation: "MIA",
-              away_abbreviation: "CIN",
-              odds: {
-                total: "7",
-                away_ml: -161,
-                favourite_team: "CIN",
-                spread: "1.5",
-                home_ml: "+140",
+              {
+                id: 20600,
+                name: "Cincinnati Reds VS Miami Marlins",
+                schedule: "2019-08-27T23:10:00+00:00",
+                home_abbreviation: "MIA",
+                away_abbreviation: "CIN",
+                odds: {
+                  total: "7",
+                  away_ml: -161,
+                  favourite_team: "CIN",
+                  spread: "1.5",
+                  home_ml: "+140",
+                },
               },
-            },
             ],
-          },];
+          }, ];
           if (!app.data.length && !app.newData.length) {
             app.leagueTunnel.classList.add("empty");
           } else if (!app.data.length) {
@@ -513,7 +532,6 @@ export async function pageLive() {
   Utils.checkHeightWindowBody();
 }
 
-
 export function pageProfile() {
   Utils.clear();
   Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
@@ -523,9 +541,8 @@ export function pageProfile() {
   Utils.checkHeightWindowBody();
 }
 
-
-
-export function pageAdmin() { //llevar javascript que no val
+export function pageAdmin() {
+  //llevar javascript que no val
 
   //https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.min.css
   // console.log(await User.fromJson(localStorage.getItem("user")));
@@ -533,169 +550,239 @@ export function pageAdmin() { //llevar javascript que no val
   //console.log(parseJwt(JSON.parse(localStorage['user']).token));
   Utils.clear();
   Utils.hideDefaultNavbar(true);
-  Utils.changeScrollBar(true)
+  Utils.changeScrollBar(true);
   document.getElementById("page").innerHTML = getBody_AdminPage();
-  document.getElementById('adminLogout').addEventListener("click", (e) => new Router().load(e.target.getAttribute("data-page")));
+  document.getElementById("adminLogout").addEventListener("click", (e) => new Router().load(e.target.getAttribute("data-page")));
   Utils.checkHeightWindowBody();
 
-
   $(function () {
-
-    'use strict';
-
-    let contents = $('#contents');
-
+    "use strict";
 
     // Start chart
-    var chart = document.getElementById('myChart');
+    var chart = document.getElementById("myChart");
     Chart.defaults.global.animation.duration = 2000; // Animation duration
     Chart.defaults.global.title.display = false; // Remove title
     Chart.defaults.global.title.text = "Chart"; // Title
-    Chart.defaults.global.title.position = 'bottom'; // Title position
-    Chart.defaults.global.defaultFontColor = '#999'; // Font color
+    Chart.defaults.global.title.position = "bottom"; // Title position
+    Chart.defaults.global.defaultFontColor = "#999"; // Font color
     Chart.defaults.global.defaultFontSize = 10; // Font size for every label
 
     // Chart.defaults.global.tooltips.backgroundColor = '#FFF'; // Tooltips background color
-    Chart.defaults.global.tooltips.borderColor = 'white'; // Tooltips border color
+    Chart.defaults.global.tooltips.borderColor = "white"; // Tooltips border color
     Chart.defaults.global.legend.labels.padding = 0;
     Chart.defaults.scale.ticks.beginAtZero = true;
-    Chart.defaults.scale.gridLines.zeroLineColor = 'rgba(255, 255, 255, 0.1)';
-    Chart.defaults.scale.gridLines.color = 'rgba(255, 255, 255, 0.02)';
+    Chart.defaults.scale.gridLines.zeroLineColor = "rgba(255, 255, 255, 0.1)";
+    Chart.defaults.scale.gridLines.color = "rgba(255, 255, 255, 0.02)";
     Chart.defaults.global.legend.display = false;
 
     var myChart = new Chart(chart, {
-      type: 'bar',
+      type: "bar",
       data: {
-        labels: ["January", "February", "March", "April", "May", 'Jul'],
+        labels: ["January", "February", "March", "April", "May", "Jul"],
         datasets: [{
-          label: "Lost",
-          fill: false,
-          lineTension: 0,
-          data: [45, 25, 40, 20, 45, 20],
-          pointBorderColor: "#4bc0c0",
-          borderColor: '#4bc0c0',
-          borderWidth: 2,
-          showLine: true,
-        }, {
-          label: "Succes",
-          fill: false,
-          lineTension: 0,
-          startAngle: 2,
-          data: [20, 40, 20, 45, 25, 60],
-          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-          backgroundColor: "transparent",
-          pointBorderColor: "#ff6384",
-          borderColor: '#ff6384',
-          borderWidth: 2,
-          showLine: true,
-        }]
+            label: "Lost",
+            fill: false,
+            lineTension: 0,
+            data: [45, 25, 40, 20, 45, 20],
+            pointBorderColor: "#4bc0c0",
+            borderColor: "#4bc0c0",
+            borderWidth: 2,
+            showLine: true,
+          },
+          {
+            label: "Succes",
+            fill: false,
+            lineTension: 0,
+            startAngle: 2,
+            data: [20, 40, 20, 45, 25, 60],
+            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+            backgroundColor: "transparent",
+            pointBorderColor: "#ff6384",
+            borderColor: "#ff6384",
+            borderWidth: 2,
+            showLine: true,
+          },
+        ],
       },
     });
 
     //  Chart ( 2 )
-    var Chart2 = document.getElementById('myChart2').getContext('2d');
+    var Chart2 = document.getElementById("myChart2").getContext("2d");
     var chart = new Chart(Chart2, {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ["January", "February", "March", "April", 'test', 'test', 'test', 'test'],
+        labels: ["January", "February", "March", "April", "test", "test", "test", "test"],
         datasets: [{
-          label: "My First dataset",
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 79, 116)',
-          borderWidth: 2,
-          pointBorderColor: false,
-          data: [5, 10, 5, 8, 20, 30, 20, 10],
-          fill: false,
-          lineTension: .4,
-        }, {
-          label: "Month",
-          fill: false,
-          lineTension: .4,
-          startAngle: 2,
-          data: [20, 14, 20, 25, 10, 15, 25, 10],
-          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-          backgroundColor: "transparent",
-          pointBorderColor: "#4bc0c0",
-          borderColor: '#4bc0c0',
-          borderWidth: 2,
-          showLine: true,
-        }, {
-          label: "Month",
-          fill: false,
-          lineTension: .4,
-          startAngle: 2,
-          data: [40, 20, 5, 10, 30, 15, 15, 10],
-          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-          backgroundColor: "transparent",
-          pointBorderColor: "#ffcd56",
-          borderColor: '#ffcd56',
-          borderWidth: 2,
-          showLine: true,
-        }]
+            label: "My First dataset",
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 79, 116)",
+            borderWidth: 2,
+            pointBorderColor: false,
+            data: [5, 10, 5, 8, 20, 30, 20, 10],
+            fill: false,
+            lineTension: 0.4,
+          },
+          {
+            label: "Month",
+            fill: false,
+            lineTension: 0.4,
+            startAngle: 2,
+            data: [20, 14, 20, 25, 10, 15, 25, 10],
+            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+            backgroundColor: "transparent",
+            pointBorderColor: "#4bc0c0",
+            borderColor: "#4bc0c0",
+            borderWidth: 2,
+            showLine: true,
+          },
+          {
+            label: "Month",
+            fill: false,
+            lineTension: 0.4,
+            startAngle: 2,
+            data: [40, 20, 5, 10, 30, 15, 15, 10],
+            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+            backgroundColor: "transparent",
+            pointBorderColor: "#ffcd56",
+            borderColor: "#ffcd56",
+            borderWidth: 2,
+            showLine: true,
+          },
+        ],
       },
 
       // Configuration options
       options: {
         title: {
-          display: false
-        }
-      }
-    });
-
-    var chart = document.getElementById('chart3');
-    var myChart = new Chart(chart, {
-      type: 'line',
-      data: {
-        labels: ["One", "Two", "Three", "Four", "Five", 'Six', "Seven", "Eight"],
-        datasets: [{
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointBorderColor: "transparent",
-          pointColor: "white",
-          borderColor: '#d9534f',
-          borderWidth: 0,
-          showLine: true,
-          data: [0, 40, 10, 30, 10, 20, 15, 20],
-          pointBackgroundColor: 'transparent',
-        }, {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#5cb85c',
-          borderWidth: 0,
-          showLine: true,
-          data: [40, 0, 20, 10, 25, 15, 30, 0],
-          pointBackgroundColor: 'transparent',
+          display: false,
         },
-        {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#f0ad4e',
-          borderWidth: 0,
-          showLine: true,
-          data: [10, 40, 20, 5, 35, 15, 35, 0],
-          pointBackgroundColor: 'transparent',
-        },
-        {
-          label: "Lost",
-          fill: false,
-          lineTension: .5,
-          pointColor: "white",
-          borderColor: '#337ab7',
-          borderWidth: 0,
-          showLine: true,
-          data: [0, 30, 10, 25, 10, 40, 20, 0],
-          pointBackgroundColor: 'transparent',
-        }
-        ]
       },
     });
 
+    var chart = document.getElementById("chart3");
+    var myChart = new Chart(chart, {
+      type: "line",
+      data: {
+        labels: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"],
+        datasets: [{
+            label: "Lost",
+            fill: false,
+            lineTension: 0.5,
+            pointBorderColor: "transparent",
+            pointColor: "white",
+            borderColor: "#d9534f",
+            borderWidth: 0,
+            showLine: true,
+            data: [0, 40, 10, 30, 10, 20, 15, 20],
+            pointBackgroundColor: "transparent",
+          },
+          {
+            label: "Lost",
+            fill: false,
+            lineTension: 0.5,
+            pointColor: "white",
+            borderColor: "#5cb85c",
+            borderWidth: 0,
+            showLine: true,
+            data: [40, 0, 20, 10, 25, 15, 30, 0],
+            pointBackgroundColor: "transparent",
+          },
+          {
+            label: "Lost",
+            fill: false,
+            lineTension: 0.5,
+            pointColor: "white",
+            borderColor: "#f0ad4e",
+            borderWidth: 0,
+            showLine: true,
+            data: [10, 40, 20, 5, 35, 15, 35, 0],
+            pointBackgroundColor: "transparent",
+          },
+          {
+            label: "Lost",
+            fill: false,
+            lineTension: 0.5,
+            pointColor: "white",
+            borderColor: "#337ab7",
+            borderWidth: 0,
+            showLine: true,
+            data: [0, 30, 10, 25, 10, 40, 20, 0],
+            pointBackgroundColor: "transparent",
+          },
+        ],
+      },
+    });
   });
+
+  let contents = document.querySelector("#contents");
+  document.querySelector("#usersList").addEventListener("click", () => {
+    Array.from(contents.children).forEach((x, i) => i != 0 ? x.remove() : "")
+
+    let users_list = `<div class="col-md-12"><div class="content">
+    <h2>Listado de Usuarios</h2>
+    <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+  </table>     
+</div></div></section>`;
+    contents.innerHTML += baseSectionAdmin(users_list);
+  });
+
+  document.querySelector("#statsList").addEventListener("click", (e) => {
+    Array.from(contents.children).forEach((x, i) => i != 0 ? x.remove() : "");
+
+    let stats_list = `<section><div class="col-md-12"><div class="content"></div></div></section>`;
+    contents.innerHTML += baseSectionAdmin(stats_list);
+    let chart = new CustomChart(1, document.getElementsByClassName('content')[0], CustomChart.CHART_TYPE.LINE, ["uno", "dos"], [{
+        label: "Lost",
+        fill: false,
+        lineTension: 0,
+        data: [45, 25, 40, 20, 45, 20],
+        pointBorderColor: "#4bc0c0",
+        borderColor: "#4bc0c0",
+        borderWidth: 2,
+        showLine: true,
+      },
+      {
+        label: "Succes",
+        fill: false,
+        lineTension: 0,
+        startAngle: 2,
+        data: [20, 40, 20, 45, 25, 60],
+        // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+        backgroundColor: "transparent",
+        pointBorderColor: "#ff6384",
+        borderColor: "#ff6384",
+        borderWidth: 2,
+        showLine: true,
+      },
+    ]);
+    chart.createChart();
+
+  });
+
 }
 
 export function pageRegister() {
@@ -703,30 +790,32 @@ export function pageRegister() {
   Utils.setBodyBackground("linear-gradient(#141e30, #243b55)");
   Utils.showHideSearchBar(false);
   Utils.changeNavbarRightButtons();
-  document.getElementById('page').innerHTML = getBody_RegisterPage();
+  document.getElementById("page").innerHTML = getBody_RegisterPage();
   Utils.checkHeightWindowBody();
 
-  $('.form').find('input').on('keyup blur focus', function (e) {
-    let $this = $(this),
-      label = $this.prev('label');
-    if (e.type === 'keyup') {
-      if ($this.val() === '') label.removeClass('active highlight');
-      else label.addClass('active highlight');
-    } else if (e.type === 'blur') {
-      if ($this.val() === '') label.removeClass('active highlight');
-      else label.removeClass('highlight');
-    } else if (e.type === 'focus') {
-      if ($this.val() === '') label.removeClass('highlight');
-      else if ($this.val() !== '') label.addClass('highlight');
-    }
-  });
+  $(".form")
+    .find("input")
+    .on("keyup blur focus", function (e) {
+      let $this = $(this),
+        label = $this.prev("label");
+      if (e.type === "keyup") {
+        if ($this.val() === "") label.removeClass("active highlight");
+        else label.addClass("active highlight");
+      } else if (e.type === "blur") {
+        if ($this.val() === "") label.removeClass("active highlight");
+        else label.removeClass("highlight");
+      } else if (e.type === "focus") {
+        if ($this.val() === "") label.removeClass("highlight");
+        else if ($this.val() !== "") label.addClass("highlight");
+      }
+    });
 
-  $('.tab a').on('click', function (e) {
+  $(".tab a").on("click", function (e) {
     e.preventDefault();
-    $(this).parent().addClass('active');
-    $(this).parent().siblings().removeClass('active');
-    let target = $(this).attr('href');
-    $('.tab-content > div').not(target).hide();
+    $(this).parent().addClass("active");
+    $(this).parent().siblings().removeClass("active");
+    let target = $(this).attr("href");
+    $(".tab-content > div").not(target).hide();
     $(target).fadeIn(600);
   });
 
@@ -737,7 +826,7 @@ export function pageRegister() {
     let field_l_name = form.last_name;
     let field_email = form.email;
     let field_password = form.password;
-    let field_error = document.getElementsByClassName('field-error')[0];
+    let field_error = document.getElementsByClassName("field-error")[0];
     field_error.innerHTML = "";
 
     let data = new FormData(event.target);
@@ -766,19 +855,20 @@ export function pageRegister() {
     !valid_email ? data_error.push(REGEX_REGISTER_EMAIL_ERROR) : "";
     !valid_password ? data_error.push(REGEX_REGISTER_PASSWORD_ERROR) : "";
 
-    data_error.forEach(element => {
+    data_error.forEach((element) => {
       let newElement = document.createElement("label");
       newElement.appendChild(document.createTextNode(element));
       field_error.appendChild(newElement);
     });
-    data_error.length == 0 ? (() => {
-      register(f_name, password);
-      new Router().load("home");
-    })() : "";
+    data_error.length == 0 ?
+      (() => {
+        register(f_name, password);
+        new Router().load("home");
+      })() :
+      "";
     Utils.checkHeightWindowBody();
   });
 }
-
 
 export async function pageBets() {
   Utils.clear();
@@ -787,7 +877,6 @@ export async function pageBets() {
   Utils.changeNavbarRightButtons();
 
   Utils.checkHeightWindowBody();
-
 }
 
 export function pageTournaments() {
@@ -796,7 +885,7 @@ export function pageTournaments() {
   Utils.showHideSearchBar(false);
   Utils.changeNavbarRightButtons();
 
-  document.getElementById('page').innerHTML += tournamentInnerNav();
+  document.getElementById("page").innerHTML += tournamentInnerNav();
 
   let tournament;
 
@@ -804,10 +893,14 @@ export function pageTournaments() {
   $("#tile-1 .nav-tabs a").click(function (e) {
     var position = $(this).parent().position();
     var width = $(this).parent().width();
-    $("#tile-1 .slider").css({ "left": + position.left, "width": width });
+    $("#tile-1 .slider").css({
+      left: +position.left,
+      width: width
+    });
     Utils.checkHeightWindowBody(true);
     if (tournament) {
-      if (e.target.classList.contains("fa-trophy") || e.target.id == "classification-tab") {//classification tab
+      if (e.target.classList.contains("fa-trophy") || e.target.id == "classification-tab") {
+        //classification tab
         tournament.showToolTip();
       } else {
         tournament.tooltip = false;
@@ -816,10 +909,12 @@ export function pageTournaments() {
   });
   var actWidth = $("#tile-1 .nav-tabs").find(".active").parent("li").width();
   var actPosition = $("#tile-1 .nav-tabs .active").position();
-  $("#tile-1 .slider").css({ "left": + actPosition.left, "width": actWidth });
+  $("#tile-1 .slider").css({
+    left: +actPosition.left,
+    width: actWidth
+  });
 
   Utils.checkHeightWindowBody();
-
 
   var conversationalForm = window.cf.ConversationalForm.startTheConversation({
     formEl: document.getElementById("tournament_form"),
@@ -828,16 +923,18 @@ export function pageTournaments() {
     robotImage: "../../img/MLB_logo.png",
     dictionaryData: {
       "group-placeholder": "Ecribe para filtrar ...",
-      "input-placeholder": "Ecribe tu respuesta aquí ..."
-
+      "input-placeholder": "Ecribe tu respuesta aquí ...",
     },
     submitCallback: function () {
       var formDataSerialized = conversationalForm.getFormData(true);
       console.log(formDataSerialized);
-      tournament = new Tournament(formDataSerialized.tournament_type[0], formDataSerialized.tournament_mode[0],
-        parseInt(formDataSerialized.tournament_num_teams[0]), document.getElementById('classification'));
+      tournament = new Tournament(
+        formDataSerialized.tournament_type[0],
+        formDataSerialized.tournament_mode[0],
+        parseInt(formDataSerialized.tournament_num_teams[0]),
+        document.getElementById("classification")
+      );
       tournament.createTournament(formDataSerialized.teams);
-
 
       conversationalForm.addRobotChatResponse("Torneo creado correctamente.");
     },
@@ -848,25 +945,26 @@ export function pageTournaments() {
         let _teams = [];
         await Utils.loadJSON("../json/teams_players.json").then((response) => (_teams = JSON.parse(response)));
         let children = [];
-        children = _teams.map(x => {
-          let child = { tag: "option", "cf-label": "", value: "", "cf-image": "" };
+        children = _teams.map((x) => {
+          let child = {
+            tag: "option",
+            "cf-label": "",
+            value: "",
+            "cf-image": ""
+          };
           child["cf-label"] = x.Name;
           child["value"] = x.TeamID;
           child["cf-image"] = x.WikipediaLogoUrl;
           return child;
         });
-        conversationalForm.addTags([
-          {
-            tag: "select",
-            name: "teams",
-            "cf-questions":
-              "Elige los equipos que participarán en el torneo",
-            "cf-input-placeholder": "Filtrar equipos ...",
-            multiple: true,
-            children: children
-          }
-        ]);
-
+        conversationalForm.addTags([{
+          tag: "select",
+          name: "teams",
+          "cf-questions": "Elige los equipos que participarán en el torneo",
+          "cf-input-placeholder": "Filtrar equipos ...",
+          multiple: true,
+          children: children,
+        }, ]);
       } else if (dto.tag.name == "teams") {
         if (dto.tag.value.length == data.tournament_num_teams) return success();
         else return error();
@@ -875,9 +973,7 @@ export function pageTournaments() {
       console.log(success);
       console.log(error);
       return success();
-
     },
-
   });
   console.log(conversationalForm);
 }
