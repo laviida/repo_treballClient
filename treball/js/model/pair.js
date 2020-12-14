@@ -1,5 +1,5 @@
 import { Match } from "./match.js";
-import { tournament_bracket } from "../views/htmlData.js";
+import { tournament_bracket, tournamentRowTable } from "../views/htmlData.js";
 
 export {
     Pair
@@ -13,6 +13,10 @@ class Pair extends Match {
 
     paint() {
         return tournament_bracket(this);
+    }
+
+    paintLeague() {
+        return tournamentRowTable(this.home);
     }
 
 }

@@ -1,8 +1,9 @@
 export { Tournament }
-import { tournament, roundOf16Finals, quarterFinals, semiFinals, bronzeFinal, goldFinal } from "../views/htmlData.js";
+import { tournament, roundOf16Finals, quarterFinals, semiFinals, bronzeFinal, goldFinal, tournamentTable } from "../views/htmlData.js";
 import { loadJSON } from "../utils/utils.js";
 import { Team } from "./team.js";
 import { Pair } from "./pair.js";
+import { Match } from "./match.js";
 class Tournament {
     static TOURNAMENT_MODE = { FINALS: "FINALS", LEAGUE: "LEAGUE" };
     static TOURNAMENT_TEAMS_SELECT_TYPE = { RANDOM: "RANDOM", ARBITRARY: "ARBITRARY" };
@@ -33,9 +34,46 @@ class Tournament {
         else if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.ARBITRARY && this.type == Tournament.TOURNAMENT_MODE.FINALS) {
             this.json_teams = this.json_teams.filter(z => { if (arbitrary_teams_index.includes(z.TeamID.toString())) return z; });
             this.playTournamentFinals();
-        } else if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.RANDOM && this.type == Tournament.TOURNAMENT_MODE.LEAGUE) { } else { }
+        } else {
+            if (this.teams_select == Tournament.TOURNAMENT_TEAMS_SELECT_TYPE.ARBITRARY)
+                this.json_teams = this.json_teams.filter(z => { if (arbitrary_teams_index.includes(z.TeamID.toString())) return z; });
+            this.playTournamentLeague();
+        }
 
         this.drawTeamPath();
+    }
+
+    playTournamentLeague() {
+        let index_teams = this.getIndexTeams(this.num_teams, this.json_teams.length);
+        while (index_teams.length != this.num_teams) index_teams = this.getIndexTeams(this.num_teams, this.json_teams.length);
+        let init_teams = index_teams.map(x => new Team(this.json_teams[x]));
+        this.brackets = [];
+        // jornadas
+        init_teams.forEach((home, idx) => {
+            init_teams.forEach((away, i) => {
+                if (idx < i) { this.brackets.push(new Pair(home, away)); this.brackets.push(new Pair(away, home)); }
+            });
+        });
+
+        //partidos
+        this.brackets.forEach(match => match.playLeague());
+        let res_teams = [];
+
+        this.brackets.forEach((x) => {
+            let esta = false;
+            res_teams.forEach(element => { if (x.home.data.TeamID == element.home.data.TeamID) esta = true; });
+            if (!esta) res_teams.push(x);
+        });
+        res_teams.sort((a, b) => b.home.points - a.home.points);
+        res_teams.forEach((x, idx) => x.home.position = (idx + 1));
+        this.tournament_root_element.innerHTML += tournamentTable(res_teams.map(z => z.paintLeague()));
+
+        // pulsar th para ordenar
+        /*  document.getElementsByClassName('table-striped')[0].getElementsByTagName('th')[document.getElementsByClassName('table-striped')[0].getElementsByTagName('th').length - 1].addEventListener("click", () => {
+              res_teams.sort((a, b) => a.home.data.points - b.home.data.points);
+              this.tournament_root_element.innerHTML = tournamentTable(res_teams.map(z => z.paintLeague()));
+              console.log("affa");
+          });*/
     }
 
     playTournamentFinals() {
@@ -85,7 +123,6 @@ class Tournament {
             let winner_teams = this.brackets.map(x => x.winner);
             let losers_teams = this.brackets.map(x => x.loser);
             this.brackets = [];
-            console.log(winner_teams, losers_teams);
             finals ? winner_teams.concat(losers_teams).forEach((x, idx, arr) => idx % 2 != 0 ? this.brackets.push(new Pair(arr[idx - 1], x)) : "")
                 : winner_teams.forEach((x, idx) => idx % 2 != 0 ? this.brackets.push(new Pair(winner_teams[idx - 1], x)) : "");
 
@@ -152,19 +189,23 @@ class Tournament {
     }
 
     showToolTip() {
-        let element = Array.from(document.querySelectorAll('.tournament-bracket__code'))[0];
-        const _tippy = tippy(element);
-        _tippy.setContent('Click to see path');
-        _tippy.setProps({
-            arrow: true,
-            animation: 'fade',
-        });
-        window.addEventListener("scroll", () => {
-            if (this.tooltip) return;
-            this.tooltip = true;
-            _tippy.show();
-            setTimeout(() => _tippy.hide(), 5000);
-        });
+        try {
+            let element = Array.from(document.querySelectorAll('.tournament-bracket__code'))[0];
+            const _tippy = tippy(element);
+            _tippy.setContent('Click to see path');
+            _tippy.setProps({
+                arrow: true,
+                animation: 'fade',
+            });
+            window.addEventListener("scroll", () => {
+                if (this.tooltip) return;
+                this.tooltip = true;
+                _tippy.show();
+                setTimeout(() => _tippy.hide(), 5000);
+            });
+        } catch (error) {
+            console.log("tooltip not set in league tournament");
+        }
 
     }
 }

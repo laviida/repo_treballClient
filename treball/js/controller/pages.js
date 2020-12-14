@@ -36,7 +36,7 @@ import {
   getBody_AdminPage,
   getBody_RegisterPage,
   tournamentInnerNav,
-  baseSectionAdmin,
+  baseSectionAdmin
 } from "../views/htmlData.js";
 import {
   getCookie
@@ -70,8 +70,8 @@ export async function pageTeams() {
   Utils.changeNavbarRightButtons();
   var row = Utils.createElement(
     "div", {
-      class: "row justify-content-center",
-    },
+    class: "row justify-content-center",
+  },
     ""
   );
   var teams = [];
@@ -112,14 +112,14 @@ export function pageTeam(team) {
   Utils.changeNavbarRightButtons();
   var container = Utils.createElement(
     "div", {
-      class: "container",
-    },
+    class: "container",
+  },
     ""
   );
   var row = Utils.createElement(
     "div", {
-      class: "row",
-    },
+    class: "row",
+  },
     ""
   );
   team.players.forEach((player) => (row.innerHTML += Utils.drawPlayerCard(player)));
@@ -189,6 +189,7 @@ export function pageRules() {
   Utils.showHideSearchBar(false);
   Utils.changeNavbarRightButtons();
   document.getElementById("page").innerHTML += '<iframe class="responsive-iframe" src="./pdf.html" frameBorder="0"></iframe>';
+
   Utils.checkHeightWindowBody();
 }
 
@@ -277,77 +278,77 @@ export async function pageLive() {
             name: "MLB",
             provider_value: "sr:tournament:109",
             matches: [{
-                id: 20599,
-                name: "Pittsburgh Pirates VS Philadelphia Phillies",
-                schedule: "2019-08-27T23:05:00+00:00",
-                home_abbreviation: "PHI",
-                away_abbreviation: "PIT",
-                odds: {
-                  home_ml: -147,
-                  favourite_team: "PHI",
-                  spread: "1.5",
-                  total: "10",
-                  away_ml: "+125",
-                },
+              id: 20599,
+              name: "Pittsburgh Pirates VS Philadelphia Phillies",
+              schedule: "2019-08-27T23:05:00+00:00",
+              home_abbreviation: "PHI",
+              away_abbreviation: "PIT",
+              odds: {
+                home_ml: -147,
+                favourite_team: "PHI",
+                spread: "1.5",
+                total: "10",
+                away_ml: "+125",
               },
-              {
-                id: 20610,
-                name: "Baltimore Orioles VS Washington Nationals",
-                schedule: "2019-08-27T23:05:00+00:00",
-                home_abbreviation: "WSH",
-                away_abbreviation: "BAL",
-                odds: {
-                  total: "9.5",
-                  home_ml: -333,
-                  favourite_team: "WSH",
-                  spread: "1.5",
-                  away_ml: "+265",
-                },
+            },
+            {
+              id: 20610,
+              name: "Baltimore Orioles VS Washington Nationals",
+              schedule: "2019-08-27T23:05:00+00:00",
+              home_abbreviation: "WSH",
+              away_abbreviation: "BAL",
+              odds: {
+                total: "9.5",
+                home_ml: -333,
+                favourite_team: "WSH",
+                spread: "1.5",
+                away_ml: "+265",
               },
-              {
-                id: 20601,
-                name: "Chicago Cubs VS New York Mets",
-                schedule: "2019-08-27T23:10:00+00:00",
-                home_abbreviation: "NYM",
-                away_abbreviation: "CHC",
-                odds: {
-                  total: "8",
-                  away_ml: -116,
-                  favourite_team: "CHC",
-                  spread: "1.5",
-                  home_ml: -105,
-                },
+            },
+            {
+              id: 20601,
+              name: "Chicago Cubs VS New York Mets",
+              schedule: "2019-08-27T23:10:00+00:00",
+              home_abbreviation: "NYM",
+              away_abbreviation: "CHC",
+              odds: {
+                total: "8",
+                away_ml: -116,
+                favourite_team: "CHC",
+                spread: "1.5",
+                home_ml: -105,
               },
-              {
-                id: 20604,
-                name: "Cleveland Indians VS Detroit Tigers",
-                schedule: "2019-08-27T23:10:00+00:00",
-                home_abbreviation: "DET",
-                away_abbreviation: "CLE",
-                odds: {
-                  favourite_team: "CLE",
-                  spread: "1.5",
-                  total: "9.5",
-                  home_ml: "+145",
-                  away_ml: -167,
-                },
+            },
+            {
+              id: 20604,
+              name: "Cleveland Indians VS Detroit Tigers",
+              schedule: "2019-08-27T23:10:00+00:00",
+              home_abbreviation: "DET",
+              away_abbreviation: "CLE",
+              odds: {
+                favourite_team: "CLE",
+                spread: "1.5",
+                total: "9.5",
+                home_ml: "+145",
+                away_ml: -167,
               },
-              {
-                id: 20600,
-                name: "Cincinnati Reds VS Miami Marlins",
-                schedule: "2019-08-27T23:10:00+00:00",
-                home_abbreviation: "MIA",
-                away_abbreviation: "CIN",
-                odds: {
-                  total: "7",
-                  away_ml: -161,
-                  favourite_team: "CIN",
-                  spread: "1.5",
-                  home_ml: "+140",
-                },
+            },
+            {
+              id: 20600,
+              name: "Cincinnati Reds VS Miami Marlins",
+              schedule: "2019-08-27T23:10:00+00:00",
+              home_abbreviation: "MIA",
+              away_abbreviation: "CIN",
+              odds: {
+                total: "7",
+                away_ml: -161,
+                favourite_team: "CIN",
+                spread: "1.5",
+                home_ml: "+140",
               },
+            },
             ],
-          }, ];
+          },];
           if (!app.data.length && !app.newData.length) {
             app.leagueTunnel.classList.add("empty");
           } else if (!app.data.length) {
@@ -580,28 +581,28 @@ export function pageAdmin() {
       data: {
         labels: ["January", "February", "March", "April", "May", "Jul"],
         datasets: [{
-            label: "Lost",
-            fill: false,
-            lineTension: 0,
-            data: [45, 25, 40, 20, 45, 20],
-            pointBorderColor: "#4bc0c0",
-            borderColor: "#4bc0c0",
-            borderWidth: 2,
-            showLine: true,
-          },
-          {
-            label: "Succes",
-            fill: false,
-            lineTension: 0,
-            startAngle: 2,
-            data: [20, 40, 20, 45, 25, 60],
-            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-            backgroundColor: "transparent",
-            pointBorderColor: "#ff6384",
-            borderColor: "#ff6384",
-            borderWidth: 2,
-            showLine: true,
-          },
+          label: "Lost",
+          fill: false,
+          lineTension: 0,
+          data: [45, 25, 40, 20, 45, 20],
+          pointBorderColor: "#4bc0c0",
+          borderColor: "#4bc0c0",
+          borderWidth: 2,
+          showLine: true,
+        },
+        {
+          label: "Succes",
+          fill: false,
+          lineTension: 0,
+          startAngle: 2,
+          data: [20, 40, 20, 45, 25, 60],
+          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+          backgroundColor: "transparent",
+          pointBorderColor: "#ff6384",
+          borderColor: "#ff6384",
+          borderWidth: 2,
+          showLine: true,
+        },
         ],
       },
     });
@@ -613,41 +614,41 @@ export function pageAdmin() {
       data: {
         labels: ["January", "February", "March", "April", "test", "test", "test", "test"],
         datasets: [{
-            label: "My First dataset",
-            backgroundColor: "rgb(255, 99, 132)",
-            borderColor: "rgb(255, 79, 116)",
-            borderWidth: 2,
-            pointBorderColor: false,
-            data: [5, 10, 5, 8, 20, 30, 20, 10],
-            fill: false,
-            lineTension: 0.4,
-          },
-          {
-            label: "Month",
-            fill: false,
-            lineTension: 0.4,
-            startAngle: 2,
-            data: [20, 14, 20, 25, 10, 15, 25, 10],
-            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-            backgroundColor: "transparent",
-            pointBorderColor: "#4bc0c0",
-            borderColor: "#4bc0c0",
-            borderWidth: 2,
-            showLine: true,
-          },
-          {
-            label: "Month",
-            fill: false,
-            lineTension: 0.4,
-            startAngle: 2,
-            data: [40, 20, 5, 10, 30, 15, 15, 10],
-            // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-            backgroundColor: "transparent",
-            pointBorderColor: "#ffcd56",
-            borderColor: "#ffcd56",
-            borderWidth: 2,
-            showLine: true,
-          },
+          label: "My First dataset",
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 79, 116)",
+          borderWidth: 2,
+          pointBorderColor: false,
+          data: [5, 10, 5, 8, 20, 30, 20, 10],
+          fill: false,
+          lineTension: 0.4,
+        },
+        {
+          label: "Month",
+          fill: false,
+          lineTension: 0.4,
+          startAngle: 2,
+          data: [20, 14, 20, 25, 10, 15, 25, 10],
+          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+          backgroundColor: "transparent",
+          pointBorderColor: "#4bc0c0",
+          borderColor: "#4bc0c0",
+          borderWidth: 2,
+          showLine: true,
+        },
+        {
+          label: "Month",
+          fill: false,
+          lineTension: 0.4,
+          startAngle: 2,
+          data: [40, 20, 5, 10, 30, 15, 15, 10],
+          // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+          backgroundColor: "transparent",
+          pointBorderColor: "#ffcd56",
+          borderColor: "#ffcd56",
+          borderWidth: 2,
+          showLine: true,
+        },
         ],
       },
 
@@ -665,50 +666,50 @@ export function pageAdmin() {
       data: {
         labels: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"],
         datasets: [{
-            label: "Lost",
-            fill: false,
-            lineTension: 0.5,
-            pointBorderColor: "transparent",
-            pointColor: "white",
-            borderColor: "#d9534f",
-            borderWidth: 0,
-            showLine: true,
-            data: [0, 40, 10, 30, 10, 20, 15, 20],
-            pointBackgroundColor: "transparent",
-          },
-          {
-            label: "Lost",
-            fill: false,
-            lineTension: 0.5,
-            pointColor: "white",
-            borderColor: "#5cb85c",
-            borderWidth: 0,
-            showLine: true,
-            data: [40, 0, 20, 10, 25, 15, 30, 0],
-            pointBackgroundColor: "transparent",
-          },
-          {
-            label: "Lost",
-            fill: false,
-            lineTension: 0.5,
-            pointColor: "white",
-            borderColor: "#f0ad4e",
-            borderWidth: 0,
-            showLine: true,
-            data: [10, 40, 20, 5, 35, 15, 35, 0],
-            pointBackgroundColor: "transparent",
-          },
-          {
-            label: "Lost",
-            fill: false,
-            lineTension: 0.5,
-            pointColor: "white",
-            borderColor: "#337ab7",
-            borderWidth: 0,
-            showLine: true,
-            data: [0, 30, 10, 25, 10, 40, 20, 0],
-            pointBackgroundColor: "transparent",
-          },
+          label: "Lost",
+          fill: false,
+          lineTension: 0.5,
+          pointBorderColor: "transparent",
+          pointColor: "white",
+          borderColor: "#d9534f",
+          borderWidth: 0,
+          showLine: true,
+          data: [0, 40, 10, 30, 10, 20, 15, 20],
+          pointBackgroundColor: "transparent",
+        },
+        {
+          label: "Lost",
+          fill: false,
+          lineTension: 0.5,
+          pointColor: "white",
+          borderColor: "#5cb85c",
+          borderWidth: 0,
+          showLine: true,
+          data: [40, 0, 20, 10, 25, 15, 30, 0],
+          pointBackgroundColor: "transparent",
+        },
+        {
+          label: "Lost",
+          fill: false,
+          lineTension: 0.5,
+          pointColor: "white",
+          borderColor: "#f0ad4e",
+          borderWidth: 0,
+          showLine: true,
+          data: [10, 40, 20, 5, 35, 15, 35, 0],
+          pointBackgroundColor: "transparent",
+        },
+        {
+          label: "Lost",
+          fill: false,
+          lineTension: 0.5,
+          pointColor: "white",
+          borderColor: "#337ab7",
+          borderWidth: 0,
+          showLine: true,
+          data: [0, 30, 10, 25, 10, 40, 20, 0],
+          pointBackgroundColor: "transparent",
+        },
         ],
       },
     });
@@ -756,28 +757,28 @@ export function pageAdmin() {
     let stats_list = `<section><div class="col-md-12"><div class="content"></div></div></section>`;
     contents.innerHTML += baseSectionAdmin(stats_list);
     let chart = new CustomChart(1, document.getElementsByClassName('content')[0], CustomChart.CHART_TYPE.LINE, ["uno", "dos"], [{
-        label: "Lost",
-        fill: false,
-        lineTension: 0,
-        data: [45, 25, 40, 20, 45, 20],
-        pointBorderColor: "#4bc0c0",
-        borderColor: "#4bc0c0",
-        borderWidth: 2,
-        showLine: true,
-      },
-      {
-        label: "Succes",
-        fill: false,
-        lineTension: 0,
-        startAngle: 2,
-        data: [20, 40, 20, 45, 25, 60],
-        // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
-        backgroundColor: "transparent",
-        pointBorderColor: "#ff6384",
-        borderColor: "#ff6384",
-        borderWidth: 2,
-        showLine: true,
-      },
+      label: "Lost",
+      fill: false,
+      lineTension: 0,
+      data: [45, 25, 40, 20, 45, 20],
+      pointBorderColor: "#4bc0c0",
+      borderColor: "#4bc0c0",
+      borderWidth: 2,
+      showLine: true,
+    },
+    {
+      label: "Succes",
+      fill: false,
+      lineTension: 0,
+      startAngle: 2,
+      data: [20, 40, 20, 45, 25, 60],
+      // , '#ff6384', '#4bc0c0', '#ffcd56', '#457ba1'
+      backgroundColor: "transparent",
+      pointBorderColor: "#ff6384",
+      borderColor: "#ff6384",
+      borderWidth: 2,
+      showLine: true,
+    },
     ]);
     chart.createChart();
 
@@ -927,7 +928,6 @@ export function pageTournaments() {
     },
     submitCallback: function () {
       var formDataSerialized = conversationalForm.getFormData(true);
-      console.log(formDataSerialized);
       tournament = new Tournament(
         formDataSerialized.tournament_type[0],
         formDataSerialized.tournament_mode[0],
@@ -964,16 +964,12 @@ export function pageTournaments() {
           "cf-input-placeholder": "Filtrar equipos ...",
           multiple: true,
           children: children,
-        }, ]);
+        },]);
       } else if (dto.tag.name == "teams") {
         if (dto.tag.value.length == data.tournament_num_teams) return success();
         else return error();
       }
-      console.log(dto);
-      console.log(success);
-      console.log(error);
       return success();
     },
   });
-  console.log(conversationalForm);
 }

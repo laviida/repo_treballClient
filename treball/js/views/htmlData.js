@@ -21,7 +21,9 @@ export {
   goldFinal,
   roundOf16Finals,
   tournamentInnerNav,
-  baseSectionAdmin
+  baseSectionAdmin,
+  tournamentTable,
+  tournamentRowTable
 };
 
 function getBody_home() {
@@ -1323,6 +1325,40 @@ function tournamentInnerNav() {
   
 
 </div>`;
+}
+
+
+function tournamentRowTable(team) {
+  return `<tr>
+  <td class="tableImage" style="background-image:url(${team.data.WikipediaLogoUrl});">${team.data.Name}</td>
+  <td>${team.position}</td>
+  <td>${team.win}</td>
+  <td>${team.loss}</td>
+  <td>${team.tie}</td>
+  <td>${team.fgoals}</td>
+  <td>${team.agoals}</td>
+  <td>${team.points}</td>
+</tr>`;
+}
+
+function tournamentTable(teams) {
+  return `<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Position</th>
+      <th>Won</th>
+      <th>Lost</th>
+      <th>Tied</th>
+      <th>Favor Goals</th>
+      <th>Against Goals</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+   `+ teams.join("") + `
+  </tbody>
+</table>`;
 }
 
 function baseSectionAdmin(columns) {

@@ -3483,6 +3483,18 @@ body {
   height: 500px !important;
 }
 
+.table-striped tr>td,
+.table-striped tr>th {
+  text-align: center;
+}
+
+.tableImage {
+  background-size: 20% 95%;
+  background-repeat: no-repeat;
+  background-position-x: 5%;
+  padding-left: 7% !important;
+}
+
 /* end tournaments */
 
 .wh100 {
