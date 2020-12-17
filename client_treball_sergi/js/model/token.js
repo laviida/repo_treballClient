@@ -1,7 +1,12 @@
-import { getKey, TOKEN_KEY } from "../services/auth/credentials.js";
+import {
+    getKey,
+    TOKEN_KEY
+} from "../services/auth/credentials.js";
 
-export class Token {
-    static ALGORITHMS = { HS256: "HS256" };
+export class Token { // es farà en el server
+    static ALGORITHMS = {
+        HS256: "HS256"
+    };
     constructor(algorithm, username) {
         this.header = window.btoa('{"alg":' + algorithm + ',"typ":"JWT"}');
         this.payload = window.btoa('{"loggedInAs":"' + username + '","iat":' + new Date().getTime() + '}');
@@ -13,6 +18,8 @@ export class Token {
         return window.btoa(this.header) + "." + window.btoa(this.payload) + "." + window.btoa(signature);
     }
     static parseJwt(token) {
-        return { payload: window.atob(window.atob(token.split(".")[1])) };
+        return {
+            payload: window.atob(window.atob(token.split(".")[1]))
+        };
     }
 }

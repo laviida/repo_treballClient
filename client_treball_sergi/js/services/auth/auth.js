@@ -1,6 +1,13 @@
-import { getCookie, setCookie } from "../../utils/cookies.js";
-import { Token } from "../../model/token.js";
-import { User } from "../../model/user.js";
+import {
+    getCookie,
+    setCookie
+} from "../../utils/cookies.js";
+import {
+    Token
+} from "../../model/token.js";
+import {
+    User
+} from "../../model/user.js";
 
 export const VALID_USER = "VALID_USER";
 export const NOT_VALID_USER = "NOT_VALID_USER";
@@ -33,8 +40,10 @@ export function login(loginUser) {
                         registerSession(USER_LOGIN, JSON.parse(Token.parseJwt(user.token).payload));
                         resolve(VALID_USER);
                     }
-                }
-                !valid ? registerSession(NOT_VALID_USER, { loggedInAs: loginUser.user, iat: new Date().getTime() }) : valid;
+                }!valid ? registerSession(NOT_VALID_USER, {
+                    loggedInAs: loginUser.user,
+                    iat: new Date().getTime()
+                }) : valid;
                 resolve(NOT_VALID_USER);
             }
         });
@@ -54,16 +63,22 @@ export function isLogged() {
 }
 
 export function registerSession(type, object) {
+    //localStorage
     let sessions = JSON.parse(localStorage.getItem("sessions"));
     if (sessions) {
         if (!sessions[type]) sessions[type] = [];
         sessions[type].push(object);
         localStorage.setItem('sessions', JSON.stringify(sessions));
-    } else localStorage.setItem('sessions', JSON.stringify({ [type]: [object] }));
+    } else localStorage.setItem('sessions', JSON.stringify({
+        [type]: [object]
+    }));
 }
 
 export function logout() {
-    registerSession(USER_LOGOUT, { loggedOutAs: getCookie("user"), iat: new Date().getTime() });
+    registerSession(USER_LOGOUT, {
+        loggedOutAs: getCookie("user"),
+        iat: new Date().getTime()
+    });
     setCookie("user", "", -1);
 }
 

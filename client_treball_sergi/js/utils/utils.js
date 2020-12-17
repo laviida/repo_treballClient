@@ -11,6 +11,7 @@ import {
 } from "../services/auth/auth.js";
 
 export function loadJSON(name) {
+  console.log(name);
   return new Promise((resolve, reject) => {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");

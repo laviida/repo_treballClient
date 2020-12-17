@@ -12,25 +12,54 @@ export {
 class Router {
   constructor() {
     this.paths = {
-      home: { path: "/" },
-      about: { path: "/about" },
-      teams: { path: "/teams" },
-      contact: { path: "/contact" },
-      login: { path: "/login" },
-      rules: { path: "/rules" },
-      logout: { path: "/logout" },
-      news: { path: "/news" },
-      live: { path: "/live" },
-      profile: { path: "/profile" },
-      admin: { path: "/admin" },
-      register: { path: "/register" },
-      bets: { path: "/bets" },
-      tournaments: { path: "/tournaments" },
+      home: {
+        path: "/"
+      },
+      about: {
+        path: "/about"
+      },
+      teams: {
+        path: "/teams"
+      },
+      contact: {
+        path: "/contact"
+      },
+      login: {
+        path: "/login"
+      },
+      rules: {
+        path: "/rules"
+      },
+      logout: {
+        path: "/logout"
+      },
+      news: {
+        path: "/news"
+      },
+      live: {
+        path: "/live"
+      },
+      profile: {
+        path: "/profile"
+      },
+      admin: {
+        path: "/admin"
+      },
+      register: {
+        path: "/register"
+      },
+      bets: {
+        path: "/bets"
+      },
+      tournaments: {
+        path: "/tournaments"
+      },
     };
     this.initRouter();
   }
 
   initRouter() {
+    //destructuring
     const {
       location: {
         pathname = "/"
@@ -43,8 +72,12 @@ class Router {
     let user = getCookie("user");
     if (page != "register" && !user) page = "login";
     if (page != "logout" && user == "admin") page = "admin";
-    const { paths } = this;
-    const { path } = paths[page] || paths.error;
+    const {
+      paths
+    } = this;
+    const {
+      path
+    } = paths[page] || paths.error;
     const $CONTAINER = document.querySelector("#content");
     $CONTAINER.innerHTML = `<div id="page"></div>`;
 

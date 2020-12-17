@@ -1356,7 +1356,7 @@ function tournamentTable(teams) {
     </tr>
   </thead>
   <tbody>
-   `+ teams.join("") + `
+   ` + teams.join("") + `
   </tbody>
 </table>`;
 }
